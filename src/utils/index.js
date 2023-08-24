@@ -1,9 +1,5 @@
 import { shuffle } from "lodash";
-
-const SPADES_SUIT = "SPADES";
-const CROSS_SUIT = "CROSS";
-const DIAMONDS_SUIT = "DIAMONDS";
-const HEARTS_SUIT = "HEARTS";
+import { SPADES_SUIT, CROSS_SUIT, DIAMONDS_SUIT, HEARTS_SUIT } from "../const";
 
 const SUITS = [SPADES_SUIT, CROSS_SUIT, DIAMONDS_SUIT, HEARTS_SUIT];
 

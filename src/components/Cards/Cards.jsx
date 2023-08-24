@@ -1,34 +1,18 @@
 import styles from "./Cards.module.css";
+import { Card } from "../Card/Card";
 
 export function Cards({ cards, openAllCards, handleCardClick }) {
   return (
     <div className={styles.cards}>
-      {openAllCards
-        ? cards.map((card) => (
-            <button
-              className={`${styles.card} ${styles.cardOpen}`}
-              key={card.id}
-            >
-              {card.rank} {card.suit}
-            </button>
-          ))
-        : cards.map((card) => (
-            <button
-              onClick={() => handleCardClick(card)}
-              className={
-                card.open
-                  ? `${styles.card} ${styles.cardOpen}`
-                  : `${styles.card} ${styles.cardClosed}`
-              }
-              key={card.id}
-            >
-              {card.open ? (
-                `${card.rank} ${card.suit}`
-              ) : (
-                <img src="/assets/images/сard-shirt.svg" alt="card shirt" />
-              )}
-            </button>
-          ))}
+      {cards.map((card) => (
+        <Card
+          key={card.id}
+          onClick={openAllCards ? () => {} : () => handleCardClick(card)}
+          open={openAllCards ? true : card.open}
+          suit={card.suit}
+          rank={card.rank}
+        />
+      ))}
     </div>
   );
 }

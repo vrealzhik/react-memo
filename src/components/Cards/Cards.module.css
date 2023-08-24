@@ -4,36 +4,3 @@
   gap: 10px;
   flex-wrap: wrap;
 }
-
-.card {
-  background-color: unset;
-  border: unset;
-
-  width: 95px;
-  height: 133px;
-  border-radius: 4px;
-  background: #fff;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  cursor: pointer;
-}
-
-.card:hover {
-  /* background-color: #f0f0f0; */
-}
-
-.cardOpen {
-  background: white;
-}
-
-.cardClosed {
-  background-color: #e4fbff;
-  border: 6px solid white;
-}
-
-.cardClosed:hover {
-  opacity: 0.95;
-}

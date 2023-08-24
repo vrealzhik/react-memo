@@ -12,7 +12,7 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
-const PREVIEW_SECONDS = 5;
+const PREVIEW_SECONDS = 1;
 
 function getSecondsDiff(date1, date2) {
   return Math.floor((date1.getTime() - date2.getTime()) / 1000);
