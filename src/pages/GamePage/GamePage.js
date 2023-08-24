@@ -104,7 +104,7 @@ export function GamePage() {
         clearTimeout(timerId);
       };
     }
-  }, [status]);
+  }, [status, pairsCount]);
 
   useEffect(() => {
     if (!gameStartDate) {

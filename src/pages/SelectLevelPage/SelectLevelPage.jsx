@@ -1,20 +1,34 @@
 import { Link } from "react-router-dom";
 
+import styles from "./SelectLevelPage.module.css";
+/**
+ * todo
+ * сделать компонент кнопки
+ * Разобраться почему шрифт жирнее чем на макете
+ */
 export function SelectLevelPage() {
   return (
-    <div>
-      <h1>Выбери сложность</h1>
-      <ul>
-        <li>
-          <Link to="/game/3">Только сюжет</Link>
-        </li>
-        <li>
-          <Link to="/game/6">Сюжет и драки</Link>
-        </li>
-        <li>
-          <Link to="/game/9">На смерть</Link>
-        </li>
-      </ul>
+    <div className={styles.container}>
+      <div className={styles.modal}>
+        <h1 className={styles.title}>Выбери сложность</h1>
+        <ul className={styles.levels}>
+          <li className={styles.level}>
+            <Link className={styles.levelLink} to="/game/3">
+              1
+            </Link>
+          </li>
+          <li className={styles.level}>
+            <Link className={styles.levelLink} to="/game/6">
+              2
+            </Link>
+          </li>
+          <li className={styles.level}>
+            <Link className={styles.levelLink} to="/game/9">
+              3
+            </Link>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 }
