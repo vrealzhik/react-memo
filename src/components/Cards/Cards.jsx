@@ -22,7 +22,11 @@ export function Cards({ cards, openAllCards, handleCardClick }) {
               }
               key={card.id}
             >
-              {card.open ? `${card.rank} ${card.suit}` : null}
+              {card.open ? (
+                `${card.rank} ${card.suit}`
+              ) : (
+                <img src="/assets/images/сard-shirt.svg" alt="card shirt" />
+              )}
             </button>
           ))}
     </div>

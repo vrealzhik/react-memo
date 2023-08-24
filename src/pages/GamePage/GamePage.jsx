@@ -12,7 +12,7 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
-const PREVIEW_SECONDS = 1;
+const PREVIEW_SECONDS = 5;
 
 function getSecondsDiff(date1, date2) {
   return Math.floor((date1.getTime() - date2.getTime()) / 1000);
@@ -151,7 +151,13 @@ export function GamePage() {
                 <div>{seconds.toString().padStart("2", "0")}</div>
               </div>
             </div>
-            <Button>Начать заново</Button>
+            <Button
+              onClick={() => {
+                setStatus(STATUS_PREVIEW);
+              }}
+            >
+              Начать заново
+            </Button>
           </div>
 
           {<Cards cards={cards} handleCardClick={handleCardClick}></Cards>}

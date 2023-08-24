@@ -7,9 +7,13 @@
 
 .card {
   background-color: unset;
-  height: 100px;
-  width: 100px;
-  border: 2px solid #101010;
+  border: unset;
+
+  width: 95px;
+  height: 133px;
+  border-radius: 4px;
+  background: #fff;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -18,7 +22,7 @@
 }
 
 .card:hover {
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
 }
 
 .cardOpen {
@@ -27,4 +31,9 @@
 
 .cardClosed {
   background-color: #e4fbff;
+  border: 6px solid white;
+}
+
+.cardClosed:hover {
+  opacity: 0.95;
 }
