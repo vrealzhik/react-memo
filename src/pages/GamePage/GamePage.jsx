@@ -1,16 +1,18 @@
 import { shuffle } from "lodash";
 import { useEffect, useState } from "react";
-import { generateDeck } from "../../utils";
+import { convertSecondsToMinutesAndSeconds, generateDeck } from "../../utils";
 import { useParams } from "react-router-dom";
 import styles from "./GamePage.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
+import { Cards } from "../../components/Cards/Cards";
+import { Button } from "../../components/Button/Button";
 
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
-const PREVIEW_SECONDS = 0;
+const PREVIEW_SECONDS = 1;
 
 function getSecondsDiff(date1, date2) {
   return Math.floor((date1.getTime() - date2.getTime()) / 1000);
@@ -121,6 +123,8 @@ export function GamePage() {
     };
   }, [gameStartDate]);
 
+  const { minutes, seconds } = convertSecondsToMinutesAndSeconds(timer);
+
   return (
     <div className={styles.container}>
       {status === STATUS_PREVIEW ? (
@@ -129,40 +133,34 @@ export function GamePage() {
             Запомните карты, через {PREVIEW_SECONDS} секунд мы их перевернем и
             вам нужно будет найти все пары
           </h3>
-          <div className="cards">
-            {cards.map((card) => (
-              <button className="card -open" key={card.id}>
-                {card.rank} {card.suit}
-              </button>
-            ))}
-          </div>
+          <Cards cards={cards} openAllCards={true}></Cards>
         </>
       ) : null}
 
       {status === STATUS_IN_PROGRESS ? (
-        <div className="cards">
-          <div>{timer}</div>
-          {cards.map((card) => (
-            <button
-              onClick={() => handleCardClick(card)}
-              className={card.open ? "card -open" : "card -closed"}
-              key={card.id}
-            >
-              {card.open ? `${card.rank} ${card.suit}` : null}
-            </button>
-          ))}
-        </div>
+        <>
+          <div className={styles.header}>
+            <div className={styles.timer}>
+              <div className={styles.timerValue}>
+                <div className={styles.timerDescription}>min</div>
+                <div>{minutes.toString().padStart("2", "0")}</div>
+              </div>
+              .
+              <div className={styles.timerValue}>
+                <div className={styles.timerDescription}>sec</div>
+                <div>{seconds.toString().padStart("2", "0")}</div>
+              </div>
+            </div>
+            <Button>Начать заново</Button>
+          </div>
+
+          {<Cards cards={cards} handleCardClick={handleCardClick}></Cards>}
+        </>
       ) : null}
 
       {status === STATUS_LOST || status === STATUS_WON ? (
         <>
-          <div className="cards">
-            {cards.map((card) => (
-              <button className="card -open" key={card.id}>
-                {card.rank} {card.suit}
-              </button>
-            ))}
-          </div>
+          <Cards cards={cards} openAllCards={true}></Cards>
           <div className={styles.modalContainer}>
             <EndGameModal
               isWon={status === STATUS_WON}
