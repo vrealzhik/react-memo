@@ -67,3 +67,12 @@ export function generateDeck(pairsCount = 3) {
 
   return deck;
 }
+
+export function convertSecondsToMinutesAndSeconds(givenSeconds) {
+  const minutes = Math.floor(givenSeconds / 60);
+  const seconds = givenSeconds % 60;
+  return {
+    minutes,
+    seconds,
+  };
+}

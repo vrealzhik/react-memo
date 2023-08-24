@@ -1,14 +1,16 @@
 import { shuffle } from "lodash";
 import { useEffect, useState } from "react";
 import { generateDeck } from "../../utils";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import styles from "./GamePage.module.css";
+import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
-const PREVIEW_SECONDS = 1;
+const PREVIEW_SECONDS = 0;
 
 function getSecondsDiff(date1, date2) {
   return Math.floor((date1.getTime() - date2.getTime()) / 1000);
@@ -16,13 +18,17 @@ function getSecondsDiff(date1, date2) {
 
 export function GamePage() {
   const { pairsCount } = useParams();
-  const navigate = useNavigate();
 
   const [cards, setCards] = useState([]);
   const [status, setStatus] = useState(STATUS_PREVIEW);
   const [timer, setTimer] = useState(0);
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
+
+  function goToLostState() {
+    setGameEndDate(new Date());
+    setStatus(STATUS_LOST);
+  }
 
   const handleCardClick = (clickedCard) => {
     // 1. На поле открыто нечетное количество карт: сравнить текущую с открытой без половинки и возможен проигрыш\продолжение
@@ -62,8 +68,7 @@ export function GamePage() {
     // условие поражения
     const playerLost = openCardWithoutPair.length >= 2;
     if (playerLost) {
-      setGameEndDate(new Date());
-      setStatus(STATUS_LOST);
+      goToLostState();
       return;
     }
 
@@ -75,10 +80,6 @@ export function GamePage() {
       setStatus(STATUS_WON);
       return;
     }
-  };
-
-  const handleRetry = () => {
-    navigate("/");
   };
 
   useEffect(() => {
@@ -98,7 +99,6 @@ export function GamePage() {
         setGameStartDate(new Date());
         setStatus(STATUS_IN_PROGRESS);
       }, PREVIEW_SECONDS * 1000);
-      console.log(2);
 
       return () => {
         clearTimeout(timerId);
@@ -122,7 +122,7 @@ export function GamePage() {
   }, [gameStartDate]);
 
   return (
-    <div className="game-container">
+    <div className={styles.container}>
       {status === STATUS_PREVIEW ? (
         <>
           <h3>
@@ -154,20 +154,22 @@ export function GamePage() {
         </div>
       ) : null}
 
-      {status === STATUS_LOST ? (
-        <div>
-          <h2>😢 Вы проиграли! 😢</h2>
-          <p>Затраченное время: {getSecondsDiff(gameEndDate, gameStartDate)}</p>
-          <button onClick={handleRetry}>Начать сначала</button>
-        </div>
-      ) : null}
-
-      {status === STATUS_WON ? (
-        <div>
-          <h2>🎉 Вы победили! 🎉</h2>
-          <p>Затраченное время: {getSecondsDiff(gameEndDate, gameStartDate)}</p>
-          <button onClick={handleRetry}>Начать сначала</button>
-        </div>
+      {status === STATUS_LOST || status === STATUS_WON ? (
+        <>
+          <div className="cards">
+            {cards.map((card) => (
+              <button className="card -open" key={card.id}>
+                {card.rank} {card.suit}
+              </button>
+            ))}
+          </div>
+          <div className={styles.modalContainer}>
+            <EndGameModal
+              isWon={status === STATUS_WON}
+              gameDurationInSeconds={getSecondsDiff(gameEndDate, gameStartDate)}
+            />
+          </div>
+        </>
       ) : null}
     </div>
   );
