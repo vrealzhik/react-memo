@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./EndGameModal.module.css";
 import { convertSecondsToMinutesAndSeconds } from "../../utils";
+import { Button } from "../Button/Button";
 
 export function EndGameModal({ isWon, gameDurationInSeconds }) {
   const title = isWon ? "Вы победили!" : "Вы проиграли!";
@@ -25,7 +26,7 @@ export function EndGameModal({ isWon, gameDurationInSeconds }) {
         {seconds.toString().padStart("2", "0")}
       </div>
       <Link to="/">
-        <button className={styles.button}>Начать сначала</button>
+        <Button>Начать сначала</Button>
       </Link>
     </div>
   );
