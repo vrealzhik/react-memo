@@ -12,7 +12,7 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
-const PREVIEW_SECONDS = 1;
+const PREVIEW_SECONDS = 5;
 
 function getSecondsDiff(date1, date2) {
   return Math.floor((date1.getTime() - date2.getTime()) / 1000);
@@ -27,9 +27,15 @@ export function GamePage() {
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
 
-  function goToLostState() {
+  function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(STATUS_LOST);
+  }
+  function resetGame() {
+    setTimer(0);
+    setGameStartDate(null);
+    setGameEndDate(null);
+    setStatus(STATUS_PREVIEW);
   }
 
   const handleCardClick = (clickedCard) => {
@@ -70,7 +76,7 @@ export function GamePage() {
     // условие поражения
     const playerLost = openCardWithoutPair.length >= 2;
     if (playerLost) {
-      goToLostState();
+      finishGame(STATUS_LOST);
       return;
     }
 
@@ -78,16 +84,16 @@ export function GamePage() {
     const playerWon = newCards.every((card) => card.open);
 
     if (playerWon) {
-      setGameEndDate(new Date());
-      setStatus(STATUS_WON);
+      finishGame(STATUS_WON);
       return;
     }
   };
 
+  const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
+
   useEffect(() => {
     if (status === STATUS_PREVIEW) {
       const pairsCountNumber = parseInt(pairsCount);
-
       if (pairsCountNumber > 36) {
         alert("Столько пар сделать невозможно");
         return;
@@ -114,33 +120,42 @@ export function GamePage() {
     }
 
     const intervalId = setInterval(() => {
-      const timerValue = getSecondsDiff(new Date(), gameStartDate);
+      if (isGameEnded) {
+        const timerValue = getSecondsDiff(gameEndDate, gameStartDate);
 
-      setTimer(timerValue);
+        setTimer(timerValue);
+        return;
+      }
+
+      if (status === STATUS_IN_PROGRESS) {
+        const timerValue = getSecondsDiff(new Date(), gameStartDate);
+
+        setTimer(timerValue);
+        return;
+      }
+
+      setTimer(0);
     }, 300);
     return () => {
       clearInterval(intervalId);
     };
-  }, [gameStartDate]);
+  }, [gameStartDate, gameEndDate, isGameEnded, status]);
 
   const { minutes, seconds } = convertSecondsToMinutesAndSeconds(timer);
 
   return (
     <div className={styles.container}>
-      {status === STATUS_PREVIEW ? (
-        <>
-          <h3>
-            Запомните карты, через {PREVIEW_SECONDS} секунд мы их перевернем и
-            вам нужно будет найти все пары
-          </h3>
-          <Cards cards={cards} openAllCards={true}></Cards>
-        </>
-      ) : null}
-
-      {status === STATUS_IN_PROGRESS ? (
-        <>
-          <div className={styles.header}>
-            <div className={styles.timer}>
+      <div className={styles.header}>
+        <div className={styles.timer}>
+          {status === STATUS_PREVIEW ? (
+            <div>
+              <p className={styles.previewText}>Запоминайте пары!</p>
+              <p className={styles.previewDescription}>
+                Игра начнется через {PREVIEW_SECONDS} секунд
+              </p>
+            </div>
+          ) : (
+            <>
               <div className={styles.timerValue}>
                 <div className={styles.timerDescription}>min</div>
                 <div>{minutes.toString().padStart("2", "0")}</div>
@@ -150,30 +165,27 @@ export function GamePage() {
                 <div className={styles.timerDescription}>sec</div>
                 <div>{seconds.toString().padStart("2", "0")}</div>
               </div>
-            </div>
-            <Button
-              onClick={() => {
-                setStatus(STATUS_PREVIEW);
-              }}
-            >
-              Начать заново
-            </Button>
-          </div>
+            </>
+          )}
+        </div>
+        {status === STATUS_IN_PROGRESS ? (
+          <Button onClick={resetGame}>Начать заново</Button>
+        ) : null}
+      </div>
 
-          {<Cards cards={cards} handleCardClick={handleCardClick}></Cards>}
-        </>
-      ) : null}
+      <Cards
+        cards={cards}
+        handleCardClick={handleCardClick}
+        openAllCards={status !== STATUS_IN_PROGRESS}
+      />
 
-      {status === STATUS_LOST || status === STATUS_WON ? (
-        <>
-          <Cards cards={cards} openAllCards={true}></Cards>
-          <div className={styles.modalContainer}>
-            <EndGameModal
-              isWon={status === STATUS_WON}
-              gameDurationInSeconds={getSecondsDiff(gameEndDate, gameStartDate)}
-            />
-          </div>
-        </>
+      {isGameEnded ? (
+        <div className={styles.modalContainer}>
+          <EndGameModal
+            isWon={status === STATUS_WON}
+            gameDurationInSeconds={timer}
+          />
+        </div>
       ) : null}
     </div>
   );
