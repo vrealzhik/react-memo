@@ -14,8 +14,27 @@ const STATUS_PREVIEW = "STATUS_PREVIEW";
 
 const PREVIEW_SECONDS = 5;
 
-function getSecondsDiff(date1, date2) {
-  return Math.floor((date1.getTime() - date2.getTime()) / 1000);
+function getTimerValue(startDate, endDate) {
+  if (!startDate && !endDate) {
+    return {
+      minutes: 0,
+      seconds: 0,
+    };
+  }
+
+  if (endDate == null) {
+    endDate = new Date();
+  }
+
+  const diffInSecconds = Math.floor(
+    (endDate.getTime() - startDate.getTime()) / 1000
+  );
+  const minutes = Math.floor(diffInSecconds / 60);
+  const seconds = diffInSecconds % 60;
+  return {
+    minutes,
+    seconds,
+  };
 }
 
 export function GamePage() {
@@ -23,26 +42,42 @@ export function GamePage() {
 
   const [cards, setCards] = useState([]);
   const [status, setStatus] = useState(STATUS_PREVIEW);
-  const [timer, setTimer] = useState(0);
+
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
+  const [timer, setTimer] = useState({
+    seconds: 0,
+    minutes: 0,
+  });
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
-    setStatus(STATUS_LOST);
+    setStatus(status);
+  }
+  function startGame() {
+    const startDate = new Date();
+    setGameEndDate(null);
+    setGameStartDate(startDate);
+    setTimer(getTimerValue(startDate, null));
+    setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
-    setTimer(0);
     setGameStartDate(null);
     setGameEndDate(null);
+    setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
   }
 
-  const handleCardClick = (clickedCard) => {
-    // 1. На поле открыто нечетное количество карт: сравнить текущую с открытой без половинки и возможен проигрыш\продолжение
-    // 2. На поле открыто ЧЕТНОЕ количество карт: просто открыть текущую карту
-
-    const newCards = cards.map((card) => {
+  /**
+   * Обработка основного действия в игре - открытие карты.
+   * После открытия карты игра может пепереходит в следующие состояния
+   * - "Игрок выиграл", если на поле открыты все карты
+   * - "Игрок проиграл", если на поле есть две открытые карты без пары
+   * - "Игра продолжается", если не случилось первых двух условий
+   */
+  const openCard = (clickedCard) => {
+    // Игровое поле после открытия кликнутой карты
+    const nextCards = cards.map((card) => {
       if (card.id !== clickedCard.id) {
         return card;
       }
@@ -53,95 +88,81 @@ export function GamePage() {
       };
     });
 
-    // Условие проигрыша:
-    // есть две откртые карты без пары которые отличаются по масти и номиналу
+    setCards(nextCards);
 
-    const openCardWithoutPair = newCards
-      .filter((card) => card.open)
-      .filter((card, index, arr) => {
-        // найти в arr количество карт с такой мастью и рангом как у card
-        const sameCardsArray = arr.filter(
-          (openCard) =>
-            card.suit === openCard.suit && card.rank === openCard.rank
-        );
+    const isPlayerWon = nextCards.every((card) => card.open);
 
-        if (sameCardsArray.length < 2) {
-          return true;
-        }
-        return false;
-      });
+    // Победа - все карты на поле открыты
+    if (isPlayerWon) {
+      finishGame(STATUS_WON);
+      return;
+    }
 
-    setCards(newCards);
+    // Открытые карты на игровом поле
+    const openCards = nextCards.filter((card) => card.open);
 
-    // условие поражения
-    const playerLost = openCardWithoutPair.length >= 2;
+    // Ищем открытые карты, у которых нет пары среди других открытых
+    const openCardsWithoutPair = openCards.filter((card) => {
+      const sameCards = openCards.filter(
+        (openCard) => card.suit === openCard.suit && card.rank === openCard.rank
+      );
+
+      if (sameCards.length < 2) {
+        return true;
+      }
+
+      return false;
+    });
+
+    const playerLost = openCardsWithoutPair.length >= 2;
+
+    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
       finishGame(STATUS_LOST);
       return;
     }
 
-    // yсловие победы
-    const playerWon = newCards.every((card) => card.open);
-
-    if (playerWon) {
-      finishGame(STATUS_WON);
-      return;
-    }
+    // ... игра продолжается
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
+  // Игровой цикл
   useEffect(() => {
-    if (status === STATUS_PREVIEW) {
-      const pairsCountNumber = parseInt(pairsCount);
-      if (pairsCountNumber > 36) {
-        alert("Столько пар сделать невозможно");
-        return;
-      }
-
-      setCards(() => {
-        return shuffle(generateDeck(pairsCountNumber, 10));
-      });
-
-      const timerId = setTimeout(() => {
-        setGameStartDate(new Date());
-        setStatus(STATUS_IN_PROGRESS);
-      }, PREVIEW_SECONDS * 1000);
-
-      return () => {
-        clearTimeout(timerId);
-      };
-    }
-  }, [status, pairsCount]);
-
-  useEffect(() => {
-    if (!gameStartDate) {
+    // В статусах кроме превью доп логики не требуется
+    if (status !== STATUS_PREVIEW) {
       return;
     }
 
+    // В статусе превью мы
+    const pairsCountNumber = parseInt(pairsCount);
+    if (pairsCountNumber > 36) {
+      alert("Столько пар сделать невозможно");
+      return;
+    }
+
+    setCards(() => {
+      return shuffle(generateDeck(pairsCountNumber, 10));
+    });
+
+    const timerId = setTimeout(() => {
+      startGame();
+    }, PREVIEW_SECONDS * 1000);
+
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [status, pairsCount]);
+
+  // Обновляем значение таймера в интервале
+  useEffect(() => {
     const intervalId = setInterval(() => {
-      if (isGameEnded) {
-        const timerValue = getSecondsDiff(gameEndDate, gameStartDate);
-
-        setTimer(timerValue);
-        return;
-      }
-
-      if (status === STATUS_IN_PROGRESS) {
-        const timerValue = getSecondsDiff(new Date(), gameStartDate);
-
-        setTimer(timerValue);
-        return;
-      }
-
-      setTimer(0);
+      setTimer(getTimerValue(gameStartDate, gameEndDate));
     }, 300);
     return () => {
       clearInterval(intervalId);
     };
-  }, [gameStartDate, gameEndDate, isGameEnded, status]);
-
-  const { minutes, seconds } = convertSecondsToMinutesAndSeconds(timer);
+  }, [gameStartDate, gameEndDate]);
 
   return (
     <div className={styles.container}>
@@ -158,12 +179,12 @@ export function GamePage() {
             <>
               <div className={styles.timerValue}>
                 <div className={styles.timerDescription}>min</div>
-                <div>{minutes.toString().padStart("2", "0")}</div>
+                <div>{timer.minutes.toString().padStart("2", "0")}</div>
               </div>
               .
               <div className={styles.timerValue}>
                 <div className={styles.timerDescription}>sec</div>
-                <div>{seconds.toString().padStart("2", "0")}</div>
+                <div>{timer.seconds.toString().padStart("2", "0")}</div>
               </div>
             </>
           )}
@@ -175,7 +196,7 @@ export function GamePage() {
 
       <Cards
         cards={cards}
-        handleCardClick={handleCardClick}
+        handleCardClick={openCard}
         openAllCards={status !== STATUS_IN_PROGRESS}
       />
 
@@ -183,7 +204,8 @@ export function GamePage() {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
-            gameDurationInSeconds={timer}
+            gameDurationSeconds={timer.seconds}
+            gameDurationMinutes={timer.minutes}
           />
         </div>
       ) : null}

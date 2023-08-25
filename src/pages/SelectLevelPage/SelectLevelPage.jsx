@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
-
 import styles from "./SelectLevelPage.module.css";
-/**
- * todo
- * сделать компонент кнопки
- * Разобраться почему шрифт жирнее чем на макете
- */
+
 export function SelectLevelPage() {
   return (
     <div className={styles.container}>
