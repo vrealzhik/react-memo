@@ -7,6 +7,7 @@ export function EndGameModal({
   isWon,
   gameDurationSeconds,
   gameDurationMinutes,
+  onClick,
 }) {
   const title = isWon ? "Вы победили!" : "Вы проиграли!";
 
@@ -25,9 +26,8 @@ export function EndGameModal({
         {gameDurationMinutes.toString().padStart("2", "0")}.
         {gameDurationSeconds.toString().padStart("2", "0")}
       </div>
-      <Link to="/">
-        <Button>Начать сначала</Button>
-      </Link>
+
+      <Button onClick={onClick}>Начать сначала</Button>
     </div>
   );
 }
