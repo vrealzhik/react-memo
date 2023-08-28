@@ -1,9 +1,4 @@
-import {
-  CROSS_SUIT,
-  DIAMONDS_SUIT,
-  HEARTS_SUIT,
-  SPADES_SUIT,
-} from "../../const";
+import { CROSS_SUIT, DIAMONDS_SUIT, HEARTS_SUIT, SPADES_SUIT } from "../../const";
 import styles from "./Card.module.css";
 
 const images = {
@@ -17,11 +12,7 @@ export function Card({ onClick, suit, rank, open }) {
   return (
     <button
       onClick={onClick}
-      className={
-        open
-          ? `${styles.card} ${styles.cardOpen}`
-          : `${styles.card} ${styles.cardClosed}`
-      }
+      className={open ? `${styles.card} ${styles.cardOpen}` : `${styles.card} ${styles.cardClosed}`}
     >
       {open ? (
         <div className={styles.content}>

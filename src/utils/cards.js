@@ -13,23 +13,13 @@ const RANK_QUEEN = "Q";
 const RANK_KING = "K";
 const RANK_ACE = "A";
 
-const RANKS = [
-  RANK_SIX,
-  RANK_SEVEN,
-  RANK_EIGHT,
-  RANK_NINE,
-  RANK_TEN,
-  RANK_JACK,
-  RANK_QUEEN,
-  RANK_KING,
-  RANK_ACE,
-];
+const RANKS = [RANK_SIX, RANK_SEVEN, RANK_EIGHT, RANK_NINE, RANK_TEN, RANK_JACK, RANK_QUEEN, RANK_KING, RANK_ACE];
 
 function createUniqueDeck() {
   const deck = [];
 
-  SUITS.forEach((suit) => {
-    RANKS.forEach((rank) => {
+  SUITS.forEach(suit => {
+    RANKS.forEach(rank => {
       deck.push({ rank, suit });
     });
   });

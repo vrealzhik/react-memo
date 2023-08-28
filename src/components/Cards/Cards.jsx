@@ -19,13 +19,11 @@ function getTimerValue(startDate, endDate) {
     };
   }
 
-  if (endDate == null) {
+  if (endDate === null) {
     endDate = new Date();
   }
 
-  const diffInSecconds = Math.floor(
-    (endDate.getTime() - startDate.getTime()) / 1000
-  );
+  const diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
   const minutes = Math.floor(diffInSecconds / 60);
   const seconds = diffInSecconds % 60;
   return {
@@ -70,9 +68,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игрок проиграл", если на поле есть две открытые карты без пары
    * - "Игра продолжается", если не случилось первых двух условий
    */
-  const openCard = (clickedCard) => {
+  const openCard = clickedCard => {
     // Игровое поле после открытия кликнутой карты
-    const nextCards = cards.map((card) => {
+    const nextCards = cards.map(card => {
       if (card.id !== clickedCard.id) {
         return card;
       }
@@ -85,7 +83,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     setCards(nextCards);
 
-    const isPlayerWon = nextCards.every((card) => card.open);
+    const isPlayerWon = nextCards.every(card => card.open);
 
     // Победа - все карты на поле открыты
     if (isPlayerWon) {
@@ -94,13 +92,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     }
 
     // Открытые карты на игровом поле
-    const openCards = nextCards.filter((card) => card.open);
+    const openCards = nextCards.filter(card => card.open);
 
     // Ищем открытые карты, у которых нет пары среди других открытых
-    const openCardsWithoutPair = openCards.filter((card) => {
-      const sameCards = openCards.filter(
-        (openCard) => card.suit === openCard.suit && card.rank === openCard.rank
-      );
+    const openCardsWithoutPair = openCards.filter(card => {
+      const sameCards = openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
 
       if (sameCards.length < 2) {
         return true;
@@ -166,9 +162,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           {status === STATUS_PREVIEW ? (
             <div>
               <p className={styles.previewText}>Запоминайте пары!</p>
-              <p className={styles.previewDescription}>
-                Игра начнется через {previewSeconds} секунд
-              </p>
+              <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
             </div>
           ) : (
             <>
@@ -184,18 +178,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? (
-          <Button onClick={resetGame}>Начать заново</Button>
-        ) : null}
+        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
       <div className={styles.cards}>
-        {cards.map((card) => (
+        {cards.map(card => (
           <Card
             key={card.id}
-            onClick={
-              status !== STATUS_IN_PROGRESS ? () => {} : () => openCard(card)
-            }
+            onClick={status !== STATUS_IN_PROGRESS ? () => {} : () => openCard(card)}
             open={status !== STATUS_IN_PROGRESS ? true : card.open}
             suit={card.suit}
             rank={card.rank}
