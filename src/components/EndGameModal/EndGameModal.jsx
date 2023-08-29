@@ -2,10 +2,13 @@ import styles from "./EndGameModal.module.css";
 
 import { Button } from "../Button/Button";
 
+import deadImageUrl from "./images/dead.png";
+import celebrationImageUrl from "./images/celebration.png";
+
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
   const title = isWon ? "Вы победили!" : "Вы проиграли!";
 
-  const imgSrc = isWon ? "/assets/images/celebration.png" : "/assets/images/dead.png";
+  const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
   const imgAlt = isWon ? "celebration emodji" : "dead emodji";
 

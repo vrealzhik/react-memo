@@ -126,14 +126,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     }
 
     // В статусе превью мы
-    const pairsCountNumber = parseInt(pairsCount);
-    if (pairsCountNumber > 36) {
+    if (pairsCount > 36) {
       alert("Столько пар сделать невозможно");
       return;
     }
 
     setCards(() => {
-      return shuffle(generateDeck(pairsCountNumber, 10));
+      return shuffle(generateDeck(pairsCount, 10));
     });
 
     const timerId = setTimeout(() => {

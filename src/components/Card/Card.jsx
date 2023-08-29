@@ -1,11 +1,17 @@
 import { CROSS_SUIT, DIAMONDS_SUIT, HEARTS_SUIT, SPADES_SUIT } from "../../const";
 import styles from "./Card.module.css";
 
+import heartsImageUrl from "./images/hearts.svg";
+import crossImageUrl from "./images/cross.svg";
+import spadesImageUrl from "./images/spades.svg";
+import diamondsImageUrl from "./images/diamonds.svg";
+import cardShirtImageUrl from "./images/сard-shirt.svg";
+
 const images = {
-  [HEARTS_SUIT]: "/assets/images/suits/hearts.svg",
-  [CROSS_SUIT]: "/assets/images/suits/cross.svg",
-  [SPADES_SUIT]: "/assets/images/suits/spades.svg",
-  [DIAMONDS_SUIT]: "/assets/images/suits/diamonds.svg",
+  [HEARTS_SUIT]: heartsImageUrl,
+  [CROSS_SUIT]: crossImageUrl,
+  [SPADES_SUIT]: spadesImageUrl,
+  [DIAMONDS_SUIT]: diamondsImageUrl,
 };
 
 export function Card({ onClick, suit, rank, open }) {
@@ -33,7 +39,7 @@ export function Card({ onClick, suit, rank, open }) {
           </div>
         </div>
       ) : (
-        <img src="/assets/images/сard-shirt.svg" alt="card shirt" />
+        <img src={cardShirtImageUrl} alt="card shirt" />
       )}
     </button>
   );
