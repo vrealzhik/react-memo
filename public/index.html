@@ -22,6 +22,18 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <script>
+      if (window.location.pathname === "/") {
+        const basename = "/react-memo";
+        // Редирект на basename
+        // Этот же basename указан в homepage в package.json
+        // Этот же basename указан в basename роутера
+        // basename нужен чтобы деплоить на gh-pages
+        // если gh pages хостится не на /react-memo
+        // то нужно заменить значение на актуальное значение здесь и во всех других местах
+        window.location.assign(basename);
+      }
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
