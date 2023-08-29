@@ -1,70 +1,45 @@
-# Getting Started with Create React App
+# MVP Карточная игра "Мемо"
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+В этом репозитории реализован MVP карточкой игры "Мемо" по [тех.заданию](./docs/mvp-spec.md)
 
-## Available Scripts
+Проект задеплоен на gh pages:
 
-In the project directory, you can run:
+## Разработка
 
-### `npm start`
+Проект реализован на основе шаблона [Create React App](https://github.com/facebook/create-react-app).
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Как разрабатывать
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- Установите зависимости командой `npm install`
+- Запустите dev сервер `npm start`
+- Откройте адрес в браузере
 
-### `npm test`
+### Стек и инструменты
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Для стилей в коде используются css modules.
 
-### `npm run build`
+Настроены eslint и prettier. Корректность кода проверяется автоматически перед каждым коммитом с помощью lefthook (аналог husky). Закомитить код, который не проходит проверку eslint не получится.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Доступные команды
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### `npm start`
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Запускает приложение в режиме разработки.
 
-### `npm run eject`
+Откройте [http://localhost:3000](http://localhost:3000) чтобы посмотреть его в браузере.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### `npm run build`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Собирает оптимизированный и минифицированный продакшен билд приложения в папку `build`.
+После сборке, приложение готово к деплою.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### `npm run deploy`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Деплоит приложение в github pages. По сути, запускает сборку и коммитит билд в ветку gh-pages.
 
-## Learn More
+(!) github pages должен быть включен в настройках репозитория и настроен на ветку gh-pages
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+#### `npm run lint`
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Запускает eslint проверку кода, эта же команда запускается перед каждым коммитом.
+Если не получается закоммитить, попробуйте запустить эту команду и исправить все ошибки и предупреждения.
