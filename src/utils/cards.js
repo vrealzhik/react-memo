@@ -27,12 +27,14 @@ function createUniqueDeck() {
   return deck;
 }
 
+// Сквозной айдишник для карт, важно чтобы у карт в разных партиях был уникальный айди, чтобы хорошо работала анимация переворота
+let id = 1;
+
 // Она получает на вход количество пар в колоде
 // Возвращает колоду карт нужного размера
 export function generateDeck(pairsCount = 3) {
   const deck = [];
   const uniqueDeck = shuffle(createUniqueDeck());
-  let id = 1;
 
   for (let i = 0; i < pairsCount; i++) {
     const card = uniqueDeck[i];

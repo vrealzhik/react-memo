@@ -1,24 +1,16 @@
 .card {
-  background-color: unset;
-  border: unset;
-
   width: 95px;
   height: 133px;
   border-radius: 4px;
   background: #fff;
-
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
-
   border: 5px solid white;
   padding: 0;
   margin: 0;
-}
-
-.cardOpen {
-  background: white;
+  box-sizing: border-box;
 }
 
 .cardClosed {
@@ -78,4 +70,48 @@
 
 .suitImage {
   height: 25px;
+}
+
+/* Анимация переворота */
+/* весь контейнер поддерживает перспективу */
+.flipContainer {
+  perspective: 1000;
+}
+
+.flipContainer:hover .flipper {
+  transition: 0.2s;
+  transform: rotateY(35deg);
+}
+
+.flipContainer.flip .flipper {
+  transform: rotateY(180deg);
+}
+
+.flipContainer,
+.front,
+.back {
+  width: 95px;
+  height: 133px;
+}
+
+/* здесь находится скорость перевертывания */
+.flipper {
+  transition: 0.6s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+/* скройте обратную сторону во время переворота */
+.front,
+.back {
+  backface-visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* обратная, изначально скрытая сторона */
+.back {
+  z-index: 2;
+  transform: rotateY(180deg);
 }

@@ -30,10 +30,8 @@ ol {
 @font-face {
   font-family: "StratosSkyeng";
   src:
-    local("StratosSkyeng"),
-    local("StratosSkyeng"),
     url("../public/assets/fonts/StratosSkyeng.woff2") format("woff2"),
-    url("../public/assets/fonts/StratosSkyeng.woff") format("woff");
+    local("Arial");
   font-weight: 400;
   font-style: normal;
 }

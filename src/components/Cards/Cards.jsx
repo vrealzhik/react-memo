@@ -6,9 +6,12 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 
+// Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
+// Идет игра: карты закрыты, игрок может их открыть
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
+// Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
 function getTimerValue(startDate, endDate) {
@@ -32,12 +35,23 @@ function getTimerValue(startDate, endDate) {
   };
 }
 
+/**
+ * Основной компонент игры, внутри него находится вся игровая механика и логика.
+ * pairsCount - сколько пар будет в игре
+ * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
+ */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
+  // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
+  // Дата начала игры
   const [gameStartDate, setGameStartDate] = useState(null);
+  // Дата конца игры
   const [gameEndDate, setGameEndDate] = useState(null);
+
+  // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
     minutes: 0,
@@ -69,6 +83,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игра продолжается", если не случилось первых двух условий
    */
   const openCard = clickedCard => {
+    // Если карта уже открыта, то ничего не делаем
+    if (clickedCard.open) {
+      return;
+    }
     // Игровое поле после открытия кликнутой карты
     const nextCards = cards.map(card => {
       if (card.id !== clickedCard.id) {
@@ -184,7 +202,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         {cards.map(card => (
           <Card
             key={card.id}
-            onClick={status !== STATUS_IN_PROGRESS ? () => {} : () => openCard(card)}
+            onClick={() => openCard(card)}
             open={status !== STATUS_IN_PROGRESS ? true : card.open}
             suit={card.suit}
             rank={card.rank}
