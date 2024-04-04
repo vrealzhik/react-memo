@@ -184,3 +184,13 @@
 .levelLink:visited {
   color: #0080c1;
 }
+
+.leaderBtn {
+  font-family: StratosSkyeng;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #565EEF;
+  text-decoration: underline;
+  margin-top: 18px;
+}

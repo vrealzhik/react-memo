@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { useState } from "react";
 
@@ -47,6 +47,9 @@ export function SelectLevelPage() {
         <button className={styles.startBtn} onClick={startGame}>
           Старт
         </button>
+        <Link to={"/leaderboard"}>
+          <p className={styles.leaderBtn}>Перейти к лидерборду</p>
+        </Link>
       </div>
     </div>
   );

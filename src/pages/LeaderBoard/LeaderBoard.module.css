@@ -1,0 +1,51 @@
+.container {
+  width: 672px;
+  margin: 0 auto;
+  padding-top: 22px;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 35px;
+}
+
+.title {
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #ffffff;
+}
+
+.leaderBox {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.leaderBoxHeader{
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  justify-content: space-between;
+  display: flex;
+  padding: 16px 20px;
+}
+
+.pos,
+.pers,
+.time {
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  color: #999999;
+}
+
+.posBox {
+  display: flex;
+  gap: 60px;
+}
