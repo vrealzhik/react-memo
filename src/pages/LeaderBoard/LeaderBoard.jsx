@@ -2,11 +2,10 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 import styles from "./LeaderBoard.module.css";
 import { getLeaders } from "../../api";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 const LeaderBoard = () => {
   const navigate = useNavigate();
-  const [leaders, setLeaders] = useState();
 
   const startGame = () => {
     navigate("/");
