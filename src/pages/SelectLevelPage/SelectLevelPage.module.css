@@ -8,13 +8,134 @@
 
 .modal {
   width: 480px;
-  height: 459px;
+  height: 509px;
   border-radius: 12px;
   background: #c2f5ff;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.complex {
+  display: flex;
+  gap: 26px;
+  margin-bottom: 17px;
+  font-family: StratosSkyeng;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 64px;
+  line-height: 72px;
+}
+
+.complex label {
+  display: inline-block;
+  padding: 10px 29px;
+  cursor: pointer;
+  border: 5px solid transparent;
+  border-radius: 12px;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.complex label:hover {
+  border: 5px solid #7db7d4;
+}
+
+.complex input[type='radio'] {
+  display: none;
+}
+
+.complex input[type='radio']:checked+label {
+  border: 5px solid #0080c1;
+}
+
+.startBtn {
+  border: none;
+  background: #7ac100;
+  border-radius: 12px;
+  width: 246px;
+  height: 50px;
+  font-family: StratosSkyeng;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  text-align: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.startBtn:hover {
+  background-color: white;
+  border: 3px solid #7ac100;
+  color: #7ac100;
+}
+
+.moodTitle {
+  color: #004980;
+  text-align: center;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 48px;
+}
+
+.moodForm {
+  display: flex;
+  gap: 26px;
+  margin-bottom: 17px;
+  font-family: StratosSkyeng;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 22px;
+  position: relative;
+  margin-bottom: 80px;
+}
+
+.moodForm label {
+  display: inline-block;
+  padding: 5px 29px;
+  cursor: pointer;
+  border: 5px solid transparent;
+  border-radius: 12px;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.moodForm label:hover {
+  border: 5px solid #7db7d4;
+}
+
+.moodForm input[type='radio'] {
+  display: none;
+}
+
+.moodForm input[type='radio']:checked+label {
+  border: 5px solid #0080c1;
+}
+
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  width: 200px;
+  left: 20px; top: 0;
+  background: #0080c1; 
+  color: #fff; 
+  padding: 0.5em; 
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  pointer-events: none;
+  opacity: 0; 
+  transition: 0.3s; 
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  top: 2em; 
 }
 
 .title {
@@ -26,6 +147,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: 48px;
+  margin-bottom: 20px;
 }
 
 .levels {

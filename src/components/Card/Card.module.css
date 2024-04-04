@@ -80,7 +80,6 @@
 
 .flipContainer:hover .flipper {
   transition: 0.2s;
-  transform: rotateY(35deg);
 }
 
 .flipContainer.flip .flipper {
