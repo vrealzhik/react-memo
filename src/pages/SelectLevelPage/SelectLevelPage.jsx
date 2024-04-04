@@ -1,10 +1,11 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { useState } from "react";
 
 export function SelectLevelPage() {
   const [diff, setDiff] = useState(null);
   const [mode, setMode] = useState(null);
+  const navigate = useNavigate();
 
   const diffChange = e => {
     setDiff(e.target.value);
@@ -12,6 +13,12 @@ export function SelectLevelPage() {
 
   const modeChange = e => {
     setMode(e.target.value);
+  };
+
+  const startGame = () => {
+    if (diff && mode) {
+      navigate(`/game/${diff}/${mode}`);
+    }
   };
 
   return (
@@ -37,9 +44,9 @@ export function SelectLevelPage() {
             hard
           </label>
         </form>
-        <Link to={`/game/${diff}/${mode}`}>
-          <button className={styles.startBtn}>Старт</button>
-        </Link>
+        <button className={styles.startBtn} onClick={startGame}>
+          Старт
+        </button>
       </div>
     </div>
   );

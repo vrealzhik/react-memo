@@ -142,13 +142,16 @@ export function Cards({ pairsCount, previewSeconds, mode }) {
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
       setCountLost(countLost + 1);
-      const resetCard = cards.map(card => {
-        if (card.open === true) {
-          return { ...card, open: false };
-        }
-        return card;
-      });
-      setCards(resetCard);
+      setTimeout(() => {
+        const resetCard = cards.map(card => {
+          if (card.open === true) {
+            return { ...card, open: false };
+          }
+          return card;
+        });
+        setCards(resetCard);
+      }, 1000);
+
       if (countLost === initialCardsCount) {
         finishGame(STATUS_LOST);
         setCountLost(1);
